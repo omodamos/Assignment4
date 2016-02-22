@@ -1,14 +1,15 @@
 import peasy.*;
 
 PeasyCam cam;
+float camZoom;
 PImage[] skybox;
 int skyboxSize;
 Asteroid[] asteroids1;
 Asteroid[] asteroids2;
+PImage flare;
+int flareSize;
 
 void skybox() {
-  float camZoom = 2.0 * (float)cam.getDistance();
-
   beginShape();  //back
   texture(skybox[0]);
   vertex(camZoom, -camZoom, camZoom, 0, 0);
@@ -59,12 +60,23 @@ void skybox() {
 }
 
 void lights() {
-  pointLight(255, 255, 220, 0, 0, 0);
-  ambientLight(100, 100, 120);
+  pointLight(255, 220, 220, 0, 0, 0);
+  ambientLight(100, 100, 140);
+}
+
+void flares() {
+  float[] camRotation = cam.getRotations();
+  pushMatrix();
+  rotateX(camRotation[0]);
+  rotateY(camRotation[1]);
+  rotateZ(camRotation[2]);
+  translate(-flareSize/2, -flareSize/2, 0);
+  image(flare, 0, 0);
+  popMatrix();
 }
 
 void shapes() {
-  emissive(#FFD700);
+  emissive(#FF7300);
   sphere(20);  // sun
   emissive(0);
   for(int i=0; i<asteroids1.length; i++) {
@@ -82,7 +94,7 @@ class Asteroid {
   float[] rotation;  // XYZ rotation
   int rotationAxis;  // 0=X-axis, 1=Y-axis, 2=Z-axis
   float inclination; // maximum orbit offset on Z-axis
-  float angularVelocity; //
+  float angularVelocity; // speed of asteroid in radians/frame
   
   Asteroid(int s, float rad, float incline, float vel) {
     size = s;
@@ -93,7 +105,7 @@ class Asteroid {
     inclination = incline;
     angularVelocity = vel;
   }
-  /*
+  /* Create asteroid at point
   Asteroid(int s, float px, float py) {
     size = s;
     radius = sqrt(px*px + py*py);
@@ -139,10 +151,12 @@ class Asteroid {
 void setup() {
   size(800, 600, P3D);
   
+  // Camera setup
   cam = new PeasyCam(this, 0, 0, 0, 500);
-  cam.setMinimumDistance(100);
+  cam.setMinimumDistance(150);
   cam.setMaximumDistance(1000); 
-  // ortho();
+
+  // Skybox setup
   skybox = new PImage[6];
   skybox[0] = loadImage("skybox8_back.png");
   skybox[1] = loadImage("skybox8_front.png");
@@ -152,6 +166,7 @@ void setup() {
   skybox[5] = loadImage("skybox8_bottom.png");
   skyboxSize = skybox[0].width;
   
+  // Asteroids setup
   asteroids1 = new Asteroid[32];
   for(int i=0; i<asteroids1.length; i++) {
     asteroids1[i] = new Asteroid((int)random(4,6), random(100,110), 0.0, 0.005);
@@ -160,12 +175,18 @@ void setup() {
   for(int j=0; j<asteroids2.length; j++) {
     asteroids2[j] = new Asteroid((int)random(2,4), random(180,190), 100.0, 0.002);
   }
+
+  // Flare setup
+  flare = loadImage("sun_glow.png");
+  flareSize = flare.width;
 }
 
 void draw() {
   background(255);
   noStroke();
+  camZoom = 2.0 * (float)cam.getDistance();
   skybox();
   lights();
   shapes();
+  flares();
 }
