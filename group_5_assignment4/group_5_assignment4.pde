@@ -1,11 +1,18 @@
 import peasy.*;
+import ddf.minim.*;
 
 PeasyCam cam;
 float camZoom;
+
+AudioPlayer player;
+Minim minim; // audio context
+
 PImage[] skybox;
 int skyboxSize;
+
 Asteroid[] asteroids1;
 Asteroid[] asteroids2;
+
 PImage flare;
 int flareSize;
 
@@ -179,6 +186,11 @@ void setup() {
   // Flare setup
   flare = loadImage("sun_glow.png");
   flareSize = flare.width;
+  
+  // Audio setup
+  minim = new Minim(this);
+  player = minim.loadFile("music.mp3", 2048);
+  player.loop();
 }
 
 void draw() {
