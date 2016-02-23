@@ -2,11 +2,11 @@ Assignment 4: Animation
 =========================
 
 ## Installation
-*Open group_5_assignment4.pde in Processing. 
-*Select menu option Sketch->Import Library->Add Library. 
-*Search for PeasyCam and install.
-*Search for Minim and install.
-*Press run to execute program.
+1. Open group_5_assignment4.pde in Processing. 
+2. Select menu option Sketch->Import Library->Add Library. 
+3. Search for PeasyCam and install.
+4. Search for Minim and install.
+5. Press run to execute program.
 
 ## Story
 For our story we want to make an animation that represents the solar system. Our design will feature a star, planets, moons, comets, and a spaceship. Users will be able to watch the planets orbit around the sun as comets shoot past and a spaceship flies through the scene.
