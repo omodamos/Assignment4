@@ -4,8 +4,8 @@ import ddf.minim.*;
 PeasyCam cam;
 float camZoom;
 
-AudioPlayer player;
 Minim minim; // audio context
+AudioPlayer player;
 
 PImage[] skybox;
 int skyboxSize;
@@ -15,7 +15,13 @@ Asteroid[] asteroids2;
 
 PImage flare;
 int flareSize;
-
+/*
+void intro(int time) {
+  float alpha = (1-time/10000)*255;
+  fill(#000000, alpha);
+  rect(0,0, width, height);
+}
+*/
 void skybox() {
   beginShape();  //back
   texture(skybox[0]);
@@ -94,39 +100,42 @@ void shapes() {
   }
 }
 
-class Asteroid {
-  int size;  
+class OrbitingObject {
   float radius;  // orbital radius
   float angle;  // angle along orbit path
-  float[] rotation;  // XYZ rotation
-  int rotationAxis;  // 0=X-axis, 1=Y-axis, 2=Z-axis
   float inclination; // maximum orbit offset on Z-axis
   float angularVelocity; // speed of asteroid in radians/frame
   
-  Asteroid(int s, float rad, float incline, float vel) {
-    size = s;
+  OrbitingObject(float rad, float incline, float vel) {
     radius = rad;
     angle = random(0, 2*PI);
-    rotation = new float[] {random(0.0, PI), random(0.0, PI), random(0.0, PI)};
-    rotationAxis = (int)random(0,3);
     inclination = incline;
     angularVelocity = vel;
   }
-  /* Create asteroid at point
-  Asteroid(int s, float px, float py) {
-    size = s;
-    radius = sqrt(px*px + py*py);
-    angle = atan(px/py);
-    rotation = new float[] {random(0.0, PI), random(0.0, PI), random(0.0, PI)};
-    rotationAxis = (int)random(0,3);
-  }
-  */
-  void render() {
-    fill(#AFA79A);
+  
+  // moves object along orbit
+  void prograde() {
     angle += angularVelocity;
     if (angle > 2*PI) {
       angle = 0;
     }
+    translate(radius*cos(angle), radius*sin(angle), inclination*cos(angle));
+  }
+}
+
+class Asteroid extends OrbitingObject {
+  int size;
+  float[] rotation;  // XYZ rotation
+  int rotationAxis;  // 0=X-axis, 1=Y-axis, 2=Z-axis
+  
+  Asteroid(int s, float rad, float incline, float vel) {
+    super(rad, incline, vel);
+    size = s;  
+    rotation = new float[] {random(0.0, PI), random(0.0, PI), random(0.0, PI)};
+    rotationAxis = (int)random(0,3);
+  }
+  
+  void spin() {
     if (rotationAxis==0) {
       rotation[0] += 0.01;
       if (rotation[0] > 2*PI) {
@@ -145,11 +154,16 @@ class Asteroid {
         rotation[2] = 0;
       }
     }
-    pushMatrix();
-    translate(radius*cos(angle), radius*sin(angle), inclination*cos(angle));
     rotateX(rotation[0]);
     rotateY(rotation[1]);
     rotateZ(rotation[2]);
+  }
+  
+  void render() {
+    fill(#AFA79A);
+    pushMatrix();
+    prograde();
+    spin();
     box(size);
     popMatrix();
   }
@@ -194,8 +208,8 @@ void setup() {
 }
 
 void draw() {
-  background(255);
   noStroke();
+  background(255);
   camZoom = 2.0 * (float)cam.getDistance();
   skybox();
   lights();
