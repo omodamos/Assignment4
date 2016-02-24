@@ -9,7 +9,7 @@ Assignment 4: Animation
 3. Type "git clone https://github.com/omodamos/Assignment4"
 4. Write your code, make edits, add/remove files, etc...
 5. To upload changes to the remote repository (i.e. shared version of program)
-	1. Type "git add <files you want to change>" (to upload all your changes, types "git add .")
+	1. Type "git add \<files you want to change\>" (to upload all your changes, types "git add .")
 	2. Type "git commit -m \<message\>", with \<message\> being a brief description of your changes
 	3. Type "git push" to send your commit to the remote
 6. To download the latest remote repository
