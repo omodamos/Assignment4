@@ -103,12 +103,19 @@ void shapes() {
 class OrbitingObject {
   float radius;  // orbital radius
   float angle;  // angle along orbit path
-  float inclination; // maximum orbit offset on Z-axis
   float angularVelocity; // speed of asteroid in radians/frame
+  float inclination; // maximum orbit offset on Z-axis
   
   OrbitingObject(float rad, float incline, float vel) {
     radius = rad;
     angle = random(0, 2*PI);
+    inclination = incline;
+    angularVelocity = vel;
+  }
+  
+  OrbitingObject(float rad, float incline, float vel, float ang) {
+    radius = rad;
+    angle = ang;
     inclination = incline;
     angularVelocity = vel;
   }
@@ -176,15 +183,16 @@ void setup() {
   cam = new PeasyCam(this, 0, 0, 0, 500);
   cam.setMinimumDistance(150);
   cam.setMaximumDistance(1000); 
+  cam.setWheelScale(0.01);
 
   // Skybox setup
   skybox = new PImage[6];
-  skybox[0] = loadImage("skybox8_back.png");
-  skybox[1] = loadImage("skybox8_front.png");
-  skybox[2] = loadImage("skybox8_right.png");
-  skybox[3] = loadImage("skybox8_left.png");
-  skybox[4] = loadImage("skybox8_top.png");
-  skybox[5] = loadImage("skybox8_bottom.png");
+  skybox[0] = loadImage("skybox7_back.png");
+  skybox[1] = loadImage("skybox7_front.png");
+  skybox[2] = loadImage("skybox7_right.png");
+  skybox[3] = loadImage("skybox7_left.png");
+  skybox[4] = loadImage("skybox7_top.png");
+  skybox[5] = loadImage("skybox7_bottom.png");
   skyboxSize = skybox[0].width;
   
   // Asteroids setup
