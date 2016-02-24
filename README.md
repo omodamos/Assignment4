@@ -1,6 +1,21 @@
 Assignment 4: Animation
 =========================
 
+## Using git
+1. Download Git at https://git-scm.com
+	a. For OSX, you may need to download the developer tools. Just type "git" into terminal.
+	b. For Windows, you will need to use the included Git terminal, instead of Windows command prompt
+2. Open terminal. Navigate to location you want to place local repository (i.e. personal version of program).
+3. Type "git clone https://github.com/omodamos/Assignment4"
+4. Write your code, make edits, add/remove files, etc...
+5. To upload changes to the remote repository (i.e. shared version of program)
+	a. Type "git add <files you want to change>" (to upload all your changes, types "git add .")
+	b. Type "git commit -m <message>", with <message> being a brief description of your changes
+	c. Type "git push" to send your commit to the remote
+6. To download the latest remote repository
+	a. Save your local changes with "git stash"
+	b. Type "git pull"
+
 ## Installation
 1. Open group_5_assignment4.pde in Processing. 
 2. Select menu option Sketch->Import Library->Add Library. 
